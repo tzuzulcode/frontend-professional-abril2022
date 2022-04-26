@@ -1,19 +1,15 @@
-export default function getProducts(req,res){
-    return res.json([
-        {
-            id:"abc1",
-            name:"Producto 1",
-            description:"Descripción del producto"
-        },
-        {
-            id:"abc2",
-            name:"Producto 2",
-            description:"Descripción del producto"
-        },
-        {
-            id:"abc3",
-            name:"Producto 3",
-            description:"Descripción del producto"
-        }
-    ])
+import {database} from '../../config/firebase'
+import {collection,getDocs} from 'firebase/firestore'
+
+export default async function getProducts(req,res){
+    const col = collection(database,"productos")
+    const docs = await getDocs(col)
+
+    const data = []
+
+    docs.forEach(doc=>{
+        data.push({...doc.data(),id:doc.id})
+    })
+
+    return res.json(data)
 }
