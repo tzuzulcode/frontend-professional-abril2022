@@ -1,7 +1,20 @@
 import React,{useEffect,useState} from 'react'
 
 // Si utlizamos esta función, estaremos usando SSR
-export async function getServerSideProps(){
+// export async function getServerSideProps(){
+//   const productosRequest = await fetch('http://localhost:3000/api/products')
+
+//   const productos = await productosRequest.json()
+
+//   return{
+//     props:{
+//       productos
+//     }
+//   }
+// }
+
+//Utilizamos esta función si queremos SSG (Static Site Generation)
+export async function getStaticProps(){
   const productosRequest = await fetch('http://localhost:3000/api/products')
 
   const productos = await productosRequest.json()
