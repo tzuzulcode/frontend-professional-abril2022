@@ -15,6 +15,8 @@ import React,{useEffect,useState} from 'react'
 
 //Utilizamos esta función si queremos SSG (Static Site Generation)
 export async function getStaticProps(){
+
+  //Reto de mañana: Implementar la consulta a Firebase Aquí
   const productosRequest = await fetch('http://localhost:3000/api/products')
 
   const productos = await productosRequest.json()
