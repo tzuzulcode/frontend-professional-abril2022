@@ -22,14 +22,16 @@ export async function getStaticPaths(){
 
     console.log(paths)
 
-    return {paths,fallback:true}
+    return {
+        paths,
+        fallback:true // Si visitamos una ruta que no existe, devolvemos un 404
+    }
 }
 
-export function getStaticProps({params}){
+export async function getStaticProps({params}){
     return {
         props:{
             producto:{
-                id:params.id,
                 name:"Producto de ejemplo"
             }
         }
@@ -39,8 +41,9 @@ export function getStaticProps({params}){
 export default function Producto(props) {
     // const router = useRouter()
     // const id = router.query.id
+    //if(producto === undefined) {return}
     console.log(props)
     return (
-        <div>{props.producto?.id}</div>
+        <div>{props.producto?.name}</div>
     )
 }

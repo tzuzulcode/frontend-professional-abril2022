@@ -43,6 +43,7 @@ export default function Productos({productos}) {
 
   return (
     <div>
+      {console.log("Productos",productos)}
       {productos.map(producto=>{
         return <article key={producto.id}>
           <h2>{producto.name}</h2>
