@@ -2,6 +2,8 @@ import React from 'react'
 import {useRouter} from 'next/router'
 
 // export function getServerSideProps(context){
+
+//     console.log(context)
 //     const {id} = context.params
 
 //     return {
@@ -11,13 +13,16 @@ import {useRouter} from 'next/router'
 //     }
 // }
 
-export async function getStaticPaths(){
+export async function getStaticPaths(context){
+    console.log(context)
     const productosRequest = await fetch('http://localhost:3000/api/products')
 
     const productos = await productosRequest.json()
 
     const paths = productos.map(producto=>({
-        params:{id:producto.id}
+        params:{
+            id:producto.id
+        }
     }))
 
     console.log(paths)
@@ -28,7 +33,8 @@ export async function getStaticPaths(){
     }
 }
 
-export async function getStaticProps({params}){
+export async function getStaticProps(context){
+    console.log(context)
     return {
         props:{
             producto:{

@@ -7,7 +7,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <main>
-      <a href='/productos'>Ir a productos</a>
+      {/* <a href='/productos'>Ir a productos</a> */}
       <div>
       <Link href='/productos'>Ir a productos</Link>
       </div>
