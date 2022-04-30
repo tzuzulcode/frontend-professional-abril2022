@@ -1,5 +1,7 @@
 import React from 'react'
-import {useRouter} from 'next/router'
+//import {useRouter} from 'next/router'
+import {database} from '../../config/firebase'
+import {collection,doc,getDocs,getDoc} from 'firebase/firestore'
 
 // export function getServerSideProps(context){
 
@@ -13,11 +15,15 @@ import {useRouter} from 'next/router'
 //     }
 // }
 
-export async function getStaticPaths(context){
-    console.log(context)
-    const productosRequest = await fetch('http://localhost:3000/api/products')
+export async function getStaticPaths(){
+    const col = collection(database,"productos")
+    const docs = await getDocs(col)
 
-    const productos = await productosRequest.json()
+    const productos = []
+
+    docs.forEach(doc=>{
+        productos.push({...doc.data(),id:doc.id})
+    })
 
     const paths = productos.map(producto=>({
         params:{
@@ -29,17 +35,19 @@ export async function getStaticPaths(context){
 
     return {
         paths,
-        fallback:true // Si visitamos una ruta que no existe, devolvemos un 404
+        fallback:false // Si visitamos una ruta que no existe, devolvemos un 404
     }
 }
 
-export async function getStaticProps(context){
-    console.log(context)
+export async function getStaticProps({params}){
+    const document = doc(database,"productos",params.id)
+    const productDocument = await getDoc(document)
+
+    const producto = productDocument.data()
+
     return {
         props:{
-            producto:{
-                name:"Producto de ejemplo"
-            }
+            producto
         }
     }
 }
@@ -50,6 +58,6 @@ export default function Producto(props) {
     //if(producto === undefined) {return}
     console.log(props)
     return (
-        <div>{props.producto?.name}</div>
+        <div>{props.producto.name}</div>
     )
 }

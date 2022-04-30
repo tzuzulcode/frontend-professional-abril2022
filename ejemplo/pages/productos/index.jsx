@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react'
+import Link from 'next/link'
 
 // Si utlizamos esta función, estaremos usando SSR
 // export async function getServerSideProps(){
@@ -48,7 +49,9 @@ export default function Productos({productos}) {
       {console.log("Productos",productos)}
       {productos.map(producto=>{
         return <article key={producto.id}>
-          <h2>{producto.name}</h2>
+          <Link href={"/productos/"+producto.id}>
+            <h2>{producto.name}</h2>
+          </Link>
           <p>{producto.description}</p>
         </article>
       })}
