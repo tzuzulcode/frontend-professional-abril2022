@@ -1,5 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import Link from 'next/link'
+import {database} from '../../config/firebase'
+import {collection,getDocs} from 'firebase/firestore'
 
 // Si utlizamos esta función, estaremos usando SSR
 // export async function getServerSideProps(){
@@ -18,9 +20,14 @@ import Link from 'next/link'
 export async function getStaticProps(){
 
   //Reto de mañana: Implementar la consulta a Firebase Aquí
-  const productosRequest = await fetch('http://localhost:3000/api/products')
+  const col = collection(database,"productos")
+  const docs = await getDocs(col)
 
-  const productos = await productosRequest.json()
+  const productos = []
+
+  docs.forEach(doc=>{
+      productos.push({...doc.data(),id:doc.id})
+  })
 
   return{
     props:{
