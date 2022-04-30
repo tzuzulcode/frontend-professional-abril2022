@@ -32,7 +32,8 @@ export async function getStaticProps(){
   return{
     props:{
       productos
-    }
+    },
+    revalidate:10
   }
 }
 
