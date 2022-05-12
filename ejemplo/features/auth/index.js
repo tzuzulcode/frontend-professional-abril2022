@@ -21,6 +21,10 @@ const authSlice = createSlice({
             state.id = ""
             state.name = "",
             state.profilePic = ""
+        },
+        updateData(state,action){
+            state.name = action.payload.name
+            state.profilePic = action.payload.profilePic
         }
     }
 })
@@ -30,4 +34,4 @@ const authReducer = authSlice.reducer
 
 export default authReducer
 
-export const {login,logout} = authSlice.actions
+export const {login,logout,updateData} = authSlice.actions
