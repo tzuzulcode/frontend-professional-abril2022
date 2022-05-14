@@ -1,19 +1,44 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
+import {database} from '../../config/firebase'
+import {collection,addDoc} from 'firebase/firestore'
+
+export const addToCart = createAsyncThunk("cart/addToCart",async (data,thunkAPI)=>{
+    
+    const col = collection(database,"cart","tzuzulcode","items")
+    const result = await addDoc(col,data)
+
+    console.log(result.id)
+
+    return data
+})
 
 const cartSlice = createSlice({
     name:"cart",
     initialState:{
-        items:[]
+        items:[],
+        loading:false
     },
     reducers:{
-        addToCart:(state,action)=>{
-            const newProduct = action.payload
-            state.items.push(newProduct)
-        },
+        // addToCart:(state,action)=>{
+        //     const newProduct = action.payload
+        //     state.items.push(newProduct)
+        // },
         removeFromCart:(state,action)=>{
             const id = action.payload
             state.items = state.items.filter(item=>item.id!==id)
         }
+    },
+    extraReducers(builder){
+        builder.addCase(addToCart.pending,(state,action)=>{
+            state.loading = true
+        })
+        builder.addCase(addToCart.fulfilled,(state,action)=>{
+            state.loading = false
+            state.items.push(action.payload)
+        })
+        builder.addCase(addToCart.rejected,(state,action)=>{
+            state.loading = false
+        })
     }
 })
 
@@ -40,5 +65,5 @@ const cartSlice = createSlice({
 
 
 const cartReducer = cartSlice.reducer
-export const {addToCart,removeFromCart} = cartSlice.actions
+export const {removeFromCart} = cartSlice.actions
 export default cartReducer
