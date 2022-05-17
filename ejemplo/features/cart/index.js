@@ -1,15 +1,34 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import {database} from '../../config/firebase'
-import {collection,addDoc} from 'firebase/firestore'
+import {collection,addDoc,getDocs} from 'firebase/firestore'
 
 export const addToCart = createAsyncThunk("cart/addToCart",async (data,thunkAPI)=>{
+    const state = thunkAPI.getState()
+
+    if(state.auth.logged){
+        const col = collection(database,"cart",state.auth.id,"items")
+        const result = await addDoc(col,data)
+
+        return data
+    }
     
-    const col = collection(database,"cart","tzuzulcode","items")
-    const result = await addDoc(col,data)
+    return
+})
 
-    console.log(result.id)
+export const recoverCart = createAsyncThunk("cart/recoverCart",async(data,thunkAPI)=>{
+    const id = thunkAPI.getState().auth.id
+    
+    const col = collection(database,"cart",id,"items")
 
-    return data
+    const snapshot = await getDocs(col)
+
+    let items = []
+
+    snapshot.forEach(doc=>{
+        items.push({id:doc.id,...doc.data()})
+    })
+
+    return items
 })
 
 const cartSlice = createSlice({
@@ -32,11 +51,22 @@ const cartSlice = createSlice({
         builder.addCase(addToCart.pending,(state,action)=>{
             state.loading = true
         })
-        builder.addCase(addToCart.fulfilled,(state,action)=>{
+        .addCase(addToCart.fulfilled,(state,action)=>{
             state.loading = false
             state.items.push(action.payload)
         })
-        builder.addCase(addToCart.rejected,(state,action)=>{
+        .addCase(addToCart.rejected,(state,action)=>{
+            state.loading = false
+        })
+
+        builder.addCase(recoverCart.pending,(state,action)=>{
+            state.loading = true
+        })
+        .addCase(recoverCart.fulfilled,(state,action)=>{
+            state.loading = false
+            state.items = action.payload
+        })
+        .addCase(recoverCart.rejected,(state,action)=>{
             state.loading = false
         })
     }

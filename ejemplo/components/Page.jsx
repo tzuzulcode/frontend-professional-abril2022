@@ -5,6 +5,7 @@ import {onAuthStateChanged} from 'firebase/auth'
 import { auth } from '../config/firebase'
 import { login, logout } from '../features/auth'
 import Navbar from './Navbar'
+import { recoverCart } from '../features/cart'
 
 export default function Page({children}) {
     const dispatch = useDispatch()
@@ -16,13 +17,12 @@ export default function Page({children}) {
                     profilePic:result.photoURL,
                     id:result.uid
                 }))
+                dispatch(recoverCart(result.uid))
             }else{
                 // result es null
                 dispatch(logout())
             }
         })
-
-        // dispatch Recover cart
     },[])
     return (
         <>
