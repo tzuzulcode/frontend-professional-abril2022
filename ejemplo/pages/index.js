@@ -21,6 +21,7 @@ export default function Home() {
   const removeProductFromCart = ()=>{
     dispatch(removeFromCart(1))
   }
+
   return (
     <main>
       {/* <a href='/productos'>Ir a productos</a> */}
@@ -30,6 +31,10 @@ export default function Home() {
         <button onClick={addProductToCart}>Agregar al carrito</button>
         <button onClick={removeProductFromCart}>Retirar del carrito</button>
       </div>
+
+      {/* <button onClick={pay}>Pagar</button> */}
+
+      <a href="/api/payment/stripe-checkout">Pagar</a>
     </main>
   )
 }

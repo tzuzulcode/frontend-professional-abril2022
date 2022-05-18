@@ -54,6 +54,7 @@ export default function Productos({productos}) {
 
   return (
     <div>
+      <Link href="/productos/create">Crear producto</Link>
       {console.log("Productos",productos)}
       {productos.map(producto=>{
         return <article key={producto.id}>

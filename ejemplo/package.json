@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@stripe/react-stripe-js": "^1.8.0",
     "@stripe/stripe-js": "^1.29.0",
+    "axios": "^0.27.2",
     "firebase": "^9.6.11",
     "framer-motion": "^6.3.3",
     "next": "12.1.5",
