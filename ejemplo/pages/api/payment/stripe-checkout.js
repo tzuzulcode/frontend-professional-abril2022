@@ -1,7 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_SK)
 
 export default async function createCheckoutSession(req,res){
-    const host = req.headers.origin
+    const host = req.headers.host
     
     try{
         const session = await stripe.checkout.sessions.create({
@@ -12,13 +12,13 @@ export default async function createCheckoutSession(req,res){
                 }
             ],
             mode:'payment',
-            success_url:`http://localhost:3000/?success=true`,
-            cancel_url:`http://localhost:3000/?success=false`
+            success_url:`http://${host}/?success=true`,
+            cancel_url:`http://${host}/?success=false`
         })
 
-        console.log(session.url)
-
-        return res.redirect(303,session.url)
+        return res.json({
+            url:session.url
+        })
     }catch(error){
         return res.status(error.statusCode || 500).json(error.message)
     }

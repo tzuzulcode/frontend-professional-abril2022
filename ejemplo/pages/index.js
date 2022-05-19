@@ -2,9 +2,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import {useDispatch, useSelector} from 'react-redux'
+import axios from 'axios'
 
 import Link from 'next/link'
 import { addToCart, removeFromCart } from '../features/cart'
+
+import {PayPalButtons,PayPalScriptProvider} from '@paypal/react-paypal-js'
 
 export default function Home() {
 
@@ -22,6 +25,24 @@ export default function Home() {
     dispatch(removeFromCart(1))
   }
 
+  const pay = () =>{
+    axios.get("/api/payment/stripe-checkout")
+    .then(({data})=>{
+      location.href = data.url
+    })
+    .catch(error=>console.log(error))
+  }
+
+  const createrOrder = async ()=>{
+    const result = await axios.post("/api/payment/createOrder")
+
+    return result.data.orderID
+  }
+
+  const onApprove = (data)=>{
+    console.log(data)
+  }
+
   return (
     <main>
       {/* <a href='/productos'>Ir a productos</a> */}
@@ -34,7 +55,27 @@ export default function Home() {
 
       {/* <button onClick={pay}>Pagar</button> */}
 
-      <a href="/api/payment/stripe-checkout">Pagar</a>
+      <button onClick={pay}>Pagar</button>
+      <PayPalScriptProvider
+        options={{
+          'client-id':process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+          'currency':'USD'
+        }}
+      >
+        <PayPalButtons
+          style={{
+            color:"blue",
+            shape:"rect",
+            label:"pay",
+            height:25
+          }}
+
+          createOrder={createrOrder}
+          onApprove={onApprove}
+        >
+
+        </PayPalButtons>
+      </PayPalScriptProvider>
     </main>
   )
 }
