@@ -3,8 +3,9 @@ import {onAuthStateChanged} from 'firebase/auth'
 import {auth} from '../config/firebase'
 import {useDispatch} from 'react-redux'
 import { login, logout } from '../features/auth'
+import Navbar from './Navbar'
 
-export default function Page() {
+export default function Page({children}) {
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -13,15 +14,18 @@ export default function Page() {
                 dispatch(login({
                     id:authResult.uid,
                     email:authResult.email,
-                    name:result.displayName,
+                    name:authResult.displayName,
                     profilePic:authResult.photoURL
                 }))
             }else{
                 dispatch(logout())
             }
         })
-    })
+    },[])
   return (
-    <div>Page</div>
+    <>
+        <Navbar/>
+        {children}
+    </>
   )
 }
