@@ -3,8 +3,8 @@ import {Formik, Form, Field, ErrorMessage} from 'formik'
 import {signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider, FacebookAuthProvider, GoogleAuthProvider} from 'firebase/auth'
 import { auth } from '../config/firebase'
 import {useRouter} from 'next/router'
+import {providerLogin,signInMethods} from '../libs/auth'
 
-const googleProvider = new GoogleAuthProvider()
 
 export default function Login() {
 
@@ -25,45 +25,52 @@ export default function Login() {
         })
     }
 
-    const googleLogin = ()=>{
-        signInWithPopup(auth,googleProvider)
-        .then(result=>{
-            router.replace("/")
-        })
-        .catch(error=>{
-            console.log(error)
-        })
+    const loginWithProvider = (id)=>{
+        providerLogin(id)
+        .then(result=>console.log("Success:",result))
+        .catch(error=>console.log("Error",error))
     }
 
-    // Reto: Completar el login con los demás providers
-    // Extra: Añadir icono a los botones
+    
 
-  return (
-    <>
-        <button onClick={googleLogin}>Google</button>
-        <Formik 
-            initialValues={{
-                email:"",
-                password:""
-            }}
+    return (
+        <>
+            <button 
+                onClick={()=>{loginWithProvider(signInMethods.google)}}
+                >Google
+            </button>
+            <button 
+                onClick={()=>{loginWithProvider(signInMethods.facebook)}}
+                >Facebook
+            </button>
+            <button 
+                onClick={()=>{loginWithProvider(signInMethods.github)}}
+                >GitHub
+            </button>
 
-            onSubmit={login}
-        >
-            {({errors,isSubmitting})=>{
-                return <>
-                    <Form className=' bg-indigo-50 w-11/12 md:w-1/2 p-5 md:p-10 mx-auto mt-20'>
-                        <h2 className=' text-center font-bold text-4xl mb-10'>Inicia sesión con tu correo</h2>
-                        <div className='flex flex-col md:w-1/2 mx-auto gap-5'>
-                            <Field className="p-3 rounded-md" placeholder="Email..." type="email" name="email"/>
-                            <Field className="p-3 rounded-md" placeholder="Password..." type="password" name="password"/>
-                            <button className={`bg-indigo-300 p-3 rounded-md text-indigo-900 hover:bg-indigo-400 ${isSubmitting&&"bg-red-500"}`}>Iniciar sesión</button>
-                        </div>
-                    </Form>
-                    {errors&&<p>{errors.credentials}</p>}
+            <Formik 
+                initialValues={{
+                    email:"",
+                    password:""
+                }}
 
-                </>
-            }}
-        </Formik>
-    </>
-  )
+                onSubmit={login}
+            >
+                {({errors,isSubmitting})=>{
+                    return <>
+                        <Form className=' bg-indigo-50 w-11/12 md:w-1/2 p-5 md:p-10 mx-auto mt-20'>
+                            <h2 className=' text-center font-bold text-4xl mb-10'>Inicia sesión con tu correo</h2>
+                            <div className='flex flex-col md:w-1/2 mx-auto gap-5'>
+                                <Field className="p-3 rounded-md" placeholder="Email..." type="email" name="email"/>
+                                <Field className="p-3 rounded-md" placeholder="Password..." type="password" name="password"/>
+                                <button className={`bg-indigo-300 p-3 rounded-md text-indigo-900 hover:bg-indigo-400 ${isSubmitting&&"bg-red-500"}`}>Iniciar sesión</button>
+                            </div>
+                        </Form>
+                        {errors&&<p>{errors.credentials}</p>}
+
+                    </>
+                }}
+            </Formik>
+        </>
+    )
 }
