@@ -27,7 +27,9 @@ export default function Login() {
 
     const loginWithProvider = (id)=>{
         providerLogin(id)
-        .then(result=>console.log("Success:",result))
+        .then(result=>{
+            router.replace("/")
+        })
         .catch(error=>console.log("Error",error))
     }
 

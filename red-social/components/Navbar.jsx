@@ -23,6 +23,9 @@ export default function Navbar() {
             <ul className='flex items-center gap-5 text-white'>
                 <li><Link href="/">Home</Link></li>
                 {!auth.logged&&<li><Link href="/login">Login</Link></li>}
+                {
+                    auth.logged&&<li><Link href="/profile">My profile</Link></li>
+                }
                 {auth.logged&&<li className='ml-auto'>
                     <div onClick={()=>{setOpen(!open)}} className='flex gap-3 items-center'>
                         <img className='w-8 h-8 rounded-full' src={auth.user.profilePic} alt="" />

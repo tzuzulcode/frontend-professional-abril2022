@@ -32,11 +32,10 @@ export async function providerLogin(id){
     try{
         return await signInWithPopup(auth,getProvider(id))
     }catch(error){
-        console.log(error.email)
-        console.log(error.credential) // Verificar la propiedad
-        console.log(error.code)
-        if(error.email && error.credential && error.code ==="auth/account-exists-with-different-credential"){
-            const providers = await fetchSignInMethodsForEmail(error.email)
+        // console.log({...error})
+        const email = error.customData.email
+        if(email && error.code ==="auth/account-exists-with-different-credential"){
+            const providers = await fetchSignInMethodsForEmail(auth,email)
             const method = providers.find(provider=>supportedSignInMethods.includes(provider))
 
             if(!method){
@@ -44,7 +43,7 @@ export async function providerLogin(id){
             }
 
             const linkedProvider = getProvider(method)
-            const result = await signInWithPopup(linkedProvider)
+            const result = await signInWithPopup(auth,linkedProvider)
             return result
         }
 
