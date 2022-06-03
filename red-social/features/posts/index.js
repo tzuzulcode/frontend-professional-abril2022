@@ -12,7 +12,7 @@ const createPost = createAsyncThunk("posts/create",async (data,thunkAPI)=>{
         ...data
     })
 
-    return doc
+    return doc.data()
 
 })
 
