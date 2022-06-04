@@ -11,11 +11,13 @@ export default function Page({children}) {
     useEffect(()=>{
         onAuthStateChanged(auth,(authResult)=>{
             if(authResult){
+                console.log(authResult)
                 dispatch(login({
-                    id:authResult.uid,
                     email:authResult.email,
                     name:authResult.displayName,
-                    profilePic:authResult.photoURL
+                    profilePic:authResult.photoURL,
+                    provider:authResult.providerId,
+                    idProvider:authResult.uid
                 }))
             }else{
                 dispatch(logout())
