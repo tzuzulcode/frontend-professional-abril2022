@@ -18,6 +18,8 @@ export default async function create(req,res){
         return res.json(post)
     }
 
+    // ID duplicado
+
     return res.json({
         success:true
     })

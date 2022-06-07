@@ -23,7 +23,6 @@ const authSlice = createSlice({
             name:"",
             email:"",
             id:"",
-            idUser:"",
             profilePic:""
         }
     },

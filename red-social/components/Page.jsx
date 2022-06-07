@@ -4,6 +4,7 @@ import {auth} from '../config/firebase'
 import {useDispatch} from 'react-redux'
 import { login, logout } from '../features/auth'
 import Navbar from './Navbar'
+import { getAllPosts } from '../features/posts'
 
 export default function Page({children}) {
     const dispatch = useDispatch()
@@ -19,6 +20,10 @@ export default function Page({children}) {
                     provider:authResult.providerId,
                     idProvider:authResult.uid
                 }))
+                .then(()=>{
+                    dispatch(getAllPosts())
+                })
+                
             }else{
                 dispatch(logout())
             }

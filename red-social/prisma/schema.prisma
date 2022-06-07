@@ -12,7 +12,7 @@ datasource db {
 
 model User{
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  idProvider String
+  idProvider String @unique
   provider String
   posts Post[] @relation(name: "author") //Publicaciones del usuario
   comments Comment[]
