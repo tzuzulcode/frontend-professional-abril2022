@@ -24,7 +24,10 @@ export default function Navbar() {
                 <li><Link href="/">Home</Link></li>
                 {!auth.logged&&<li><Link href="/login">Login</Link></li>}
                 {
-                    auth.logged&&<li><Link href="/profile">My profile</Link></li>
+                    auth.logged&&<>
+                        <li><Link href="/profile">My profile</Link></li>
+                        <li><Link href="/people">Personas</Link></li>
+                    </>
                 }
                 {auth.logged&&<li className='ml-auto'>
                     <div onClick={()=>{setOpen(!open)}} className='flex gap-3 items-center'>

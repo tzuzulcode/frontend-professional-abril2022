@@ -17,6 +17,8 @@ export default async function login(req,res){
 
         const newUser = await client.user.create({
             data:{
+                name:req.body.name,
+                profilePic:req.body.profilePic,
                 idProvider:req.body.idProvider,
                 provider:req.body.provider
             }

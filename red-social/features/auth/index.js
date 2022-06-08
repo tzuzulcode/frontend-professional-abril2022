@@ -2,8 +2,10 @@ import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const login = createAsyncThunk("auth/login",async (data,thunkAPI)=>{
-    const {idProvider,provider} = data
+    const {idProvider,provider,name,profilePic} = data
     const user = await axios.post("/api/auth/login",{
+        name,
+        profilePic,
         idProvider,
         provider
     })
