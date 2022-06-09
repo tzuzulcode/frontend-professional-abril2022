@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux'
 import { login, logout } from '../features/auth'
 import Navbar from './Navbar'
 import { getAllPosts } from '../features/posts'
+import { getPeopleForUser } from '../features/users'
 
 export default function Page({children}) {
     const dispatch = useDispatch()
@@ -22,6 +23,7 @@ export default function Page({children}) {
                 }))
                 .then(()=>{
                     dispatch(getAllPosts())
+                    dispatch(getPeopleForUser())
                 })
                 
             }else{

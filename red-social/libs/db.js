@@ -3,6 +3,7 @@ const client = new PrismaClient()
 
 let prisma
 
+// singleton
 if(process.env.NODE_ENV == "production"){
     prisma = new PrismaClient()
 }else{
