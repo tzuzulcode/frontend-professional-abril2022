@@ -22,8 +22,8 @@ model User{
   likes Post[] @relation(name:"likes",fields: [likesPostsIds],references: [id]) // Publicaciones a las que le dio like el usuario
   myFriendsIds String[] @db.ObjectId
   myFriends User[] @relation("myFriends",fields: [myFriendsIds],references: [id])
-  frienOfids String[]  @db.ObjectId
-  friendOf User[] @relation("myFriends",fields: [frienOfids],references: [id])
+  friendOfids String[]  @db.ObjectId
+  friendOf User[] @relation("myFriends",fields: [friendOfids],references: [id])
   friendShipRequestsSendedIds String[]  @db.ObjectId
   friendshipRequestsSended User[] @relation("friendshipRequests",fields: [friendShipRequestsSendedIds], references: [id])
   friendShipRequestReceivedIds String[]  @db.ObjectId

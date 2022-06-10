@@ -3,12 +3,25 @@ const client = new PrismaClient()
 
 export default async function getAll(req,res){
     const {idUser} = req.query
+    const user = await client.user.findUnique({
+        where:{
+            id:idUser
+        },
+        include:{
+            friendshipRequestsReceived:true,
+            friendshipRequestsSended:true
+        }
+    })
     const users = await client.user.findMany({
         where:{
             id:{
-                notIn:[idUser]
+                notIn:[idUser,...user.myFriendsIds,...user.friendShipRequestReceivedIds,...user.friendShipRequestsSendedIds]
             }
         }
     })
-    return res.json(users)
+    return res.json({
+        people:users,
+        receivedRequests:user.friendshipRequestsReceived,
+        sendedRequests:user.friendshipRequestsSended,
+    })
 }
