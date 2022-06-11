@@ -3,19 +3,27 @@ const client = new PrismaClient()
 
 export default async function friendshipRequest(req,res){
     if(req.method==="POST"){
-        const {idUser,idFriend,accept} = req.body
-        if(accept){
-            const friend = await client.user.findUnique({
-                where:{
-                    id:idFriend
-                }
-            })
+        const {idUser,idFriend,accepted} = req.body
+        const friend = await client.user.findUnique({
+            where:{
+                id:idFriend
+            }
+        })
+        const user = await client.user.findUnique({
+            where:{
+                id:idUser
+            }
+        })
+
+        let newUser
+
+        if(accepted){
             await client.user.update({
                 where:{
                     id: idFriend
                 },
                 data:{
-                    frienOfids:{
+                    friendOfids:{
                         push:idUser
                     },
                     myFriendsIds:{
@@ -25,18 +33,14 @@ export default async function friendshipRequest(req,res){
                 },
             })
 
-            const user = await client.user.findUnique({
-                where:{
-                    id:idUser
-                }
-            })
+            
     
-            const newUser = await client.user.update({
+            newUser = await client.user.update({
                 where:{
                     id: idUser
                 },
                 data:{
-                    frienOfids:{
+                    friendOfids:{
                         push:idFriend
                     },
                     myFriendsIds:{
@@ -46,7 +50,32 @@ export default async function friendshipRequest(req,res){
                 },
                 include:{
                     friendshipRequestsReceived:true,
-                    friendshipRequestsSended:true
+                    friendshipRequestsSended:true,
+                    myFriends:true
+                }
+            })
+        }else{
+            
+            await client.user.update({
+                where:{
+                    id: idFriend
+                },
+                data:{
+                    friendShipRequestsSendedIds:friend.friendShipRequestsSendedIds.filter(id=>id!=idUser)
+                },
+            })
+    
+            newUser = await client.user.update({
+                where:{
+                    id: idUser
+                },
+                data:{
+                    friendShipRequestReceivedIds:user.friendShipRequestReceivedIds.filter(id=>id!=idFriend)
+                },
+                include:{
+                    friendshipRequestsReceived:true,
+                    friendshipRequestsSended:true,
+                    myFriends:true
                 }
             })
         }
@@ -64,6 +93,7 @@ export default async function friendshipRequest(req,res){
             people:users,
             receivedRequests:newUser.friendshipRequestsReceived,
             sendedRequests:newUser.friendshipRequestsSended,
+            friends:newUser.myFriends
         })
     }
 }

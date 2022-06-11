@@ -1,6 +1,6 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { sendFriendsRequest } from '../features/users'
+import { resolveFriendshipRequest, sendFriendsRequest } from '../features/users'
 
 // export async function getServerSideProps(context){
 //     const host = context.req.headers.host
@@ -24,6 +24,13 @@ export default function People() {
       idFriend
     }))
   }
+
+  const respondFriendshipRequest = (idFriend,accepted)=>{
+    dispatch(resolveFriendshipRequest({
+        idFriend,
+        accepted
+    }))
+  }
   return (
     <div>
         <section>
@@ -43,7 +50,16 @@ export default function People() {
                 <article key={user.id}>
                     <p>{user.name}</p>
                     <img src={user.profilePic} alt={user.name}/>
-                    <button onClick={()=>{sendFriendshipRequest(user.id)}}>Enviar solicitud</button>
+                    <button 
+                        onClick={()=>{respondFriendshipRequest(user.id,true)}}
+                    >
+                        Aceptar
+                    </button>
+                    <button 
+                        onClick={()=>{respondFriendshipRequest(user.id,false)}}
+                    >
+                        Rechazar
+                    </button>
 
                 </article>
             ))}
@@ -54,8 +70,6 @@ export default function People() {
                 <article key={user.id}>
                     <p>{user.name}</p>
                     <img src={user.profilePic} alt={user.name}/>
-                    <button onClick={()=>{sendFriendshipRequest(user.id)}}>Enviar solicitud</button>
-
                 </article>
             ))}
         </section>

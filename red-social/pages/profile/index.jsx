@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Formik, Form, Field} from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, getAllPosts } from '../../features/posts'
+import Posts from '../../components/Posts'
 
 export default function Profile() {
     const dispatch = useDispatch()
@@ -38,12 +39,7 @@ export default function Profile() {
             </Form>
         </Formik>
 
-        {posts.map(post=>(
-            <article key={post.id}>
-                <p>{post.content}</p>
-                <img src={post.image} />
-            </article>
-        ))}
+        <Posts posts={posts}/>
     </div>
   )
 }

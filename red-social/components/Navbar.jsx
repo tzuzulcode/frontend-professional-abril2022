@@ -26,7 +26,8 @@ export default function Navbar() {
                 {
                     auth.logged&&<>
                         <li><Link href="/profile">My profile</Link></li>
-                        <li><Link href="/people">Personas</Link></li>
+                        <li><Link href="/people">People</Link></li>
+                        <li><Link href="/friends">Friends</Link></li>
                     </>
                 }
                 {auth.logged&&<li className='ml-auto'>

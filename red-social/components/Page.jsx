@@ -4,7 +4,7 @@ import {auth} from '../config/firebase'
 import {useDispatch} from 'react-redux'
 import { login, logout } from '../features/auth'
 import Navbar from './Navbar'
-import { getAllPosts } from '../features/posts'
+import { getAllPosts, getFriendsPosts } from '../features/posts'
 import { getPeopleForUser } from '../features/users'
 
 export default function Page({children}) {
@@ -23,6 +23,7 @@ export default function Page({children}) {
                 }))
                 .then(()=>{
                     dispatch(getAllPosts())
+                    dispatch(getFriendsPosts())
                     dispatch(getPeopleForUser())
                 })
                 
@@ -32,9 +33,9 @@ export default function Page({children}) {
         })
     },[])
   return (
-    <>
+    <div className='bg-gray-100'>
         <Navbar/>
         {children}
-    </>
+    </div>
   )
 }

@@ -22,10 +22,20 @@ export const getAllPosts = createAsyncThunk("posts/getAll",async (data,thunkAPI)
 })
 
 
+export const getFriendsPosts = createAsyncThunk("posts/getFriendsPosts",async(data,thunkAPI)=>{
+    const state = thunkAPI.getState()
+    const idUser = state.auth.user.id
+    const posts = await axios.get("/api/posts/myFriends/"+idUser)
+
+    return posts.data
+})
+
+
 const postsSlice = createSlice({
     name:"posts",
     initialState:{
         posts:[],
+        friendsPosts:[],
         loading:false
     },
     extraReducers(builder){
@@ -47,6 +57,16 @@ const postsSlice = createSlice({
             state.loading = true
         })
         builder.addCase(getAllPosts.rejected,(state,action)=>{
+            state.loading = false
+        })
+        builder.addCase(getFriendsPosts.fulfilled,(state,action)=>{
+            state.friendsPosts = action.payload
+            state.loading = false
+        })
+        builder.addCase(getFriendsPosts.pending,(state,action)=>{
+            state.loading = true
+        })
+        builder.addCase(getFriendsPosts.rejected,(state,action)=>{
             state.loading = false
         })
     }
