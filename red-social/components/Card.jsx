@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
 
 export default function Card({post}) {
   return (
@@ -7,7 +8,7 @@ export default function Card({post}) {
             <img className='w-10 h-10 rounded-full' src={post.author.profilePic} alt={post.author.name} />
             <h3 className=' font-medium text-3xl'>{post.author.name}</h3>
         </div>
-        <p className='text-xl my-5'>{post.content}</p>
+        <ReactMarkdown>{post.content}</ReactMarkdown>
         <img className='rounded-md' src={post.image} />
     </article>
   )

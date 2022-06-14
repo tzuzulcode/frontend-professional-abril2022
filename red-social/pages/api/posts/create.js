@@ -14,6 +14,14 @@ export default async function create(req,res){
                             id:req.body.author
                         }
                     }
+                },
+                include:{
+                    author:{
+                        select:{
+                            name:true,
+                            profilePic:true
+                        }
+                    }
                 }
             })
         

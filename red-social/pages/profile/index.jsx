@@ -3,15 +3,25 @@ import { Formik, Form, Field} from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, getAllPosts } from '../../features/posts'
 import Posts from '../../components/Posts'
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
+const MarkdownEditor = dynamic(()=>{
+    return import('@uiw/react-md-editor')
+    .then(mod=>mod.default)
+},{ssr:false})
 
 export default function Profile() {
     const dispatch = useDispatch()
     const {posts} = useSelector(state=>state.posts)
+    const [editor,setEditor] = useState("")
 
     const uploadPost = (values,{setSubmitting})=>{
-        dispatch(createPost(
-            values
-        ))
+        dispatch(createPost({
+            image:values.image,
+            content:editor
+        }))
         .then(()=>{
             setSubmitting(false)
         })
@@ -28,12 +38,19 @@ export default function Profile() {
         <Formik 
             onSubmit={uploadPost}
             initialValues={{
-                content:"",
                 image:""
             }}
         >
             <Form>
-                <Field placeholder="Contenido..." type="text" name="content"/>
+                <MarkdownEditor 
+                    value={editor}
+                    onChange={(value,event,editor)=>{
+                        console.log(value)
+                        console.log(event)
+                        console.log(editor)
+                        setEditor(value)
+                    }}
+                />
                 <Field placeholder="Image..." type="text" name="image"/>
                 <button type='submit'>Post</button>
             </Form>

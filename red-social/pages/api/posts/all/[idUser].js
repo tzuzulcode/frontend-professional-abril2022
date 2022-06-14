@@ -10,7 +10,12 @@ export default async function getAll(req,res){
             }
         },
         include:{
-            author:true
+            author:{
+                select:{
+                    name:true,
+                    profilePic:true
+                }
+            }
         }
     })
 

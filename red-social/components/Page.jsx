@@ -11,6 +11,7 @@ export default function Page({children}) {
     const dispatch = useDispatch()
 
     useEffect(()=>{
+        document.documentElement.setAttribute('data-color-mode', 'light')
         onAuthStateChanged(auth,(authResult)=>{
             if(authResult){
                 console.log(authResult)
