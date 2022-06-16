@@ -8,7 +8,9 @@ export default function Card({post}) {
             <img className='w-10 h-10 rounded-full' src={post.author.profilePic} alt={post.author.name} />
             <h3 className=' font-medium text-3xl'>{post.author.name}</h3>
         </div>
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+        <div className="prose prose-hr:mt-3 prose-hr:mt-5 prose-a:text-indigo-600">
+          <ReactMarkdown>{post.content}</ReactMarkdown>
+        </div>
         <img className='rounded-md' src={post.image} />
     </article>
   )
