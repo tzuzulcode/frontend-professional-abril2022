@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {useRouter} from 'next/router'
 import { realTimeDB } from '../../../config/firebase'
-import { child, get, ref, push } from 'firebase/database'
+import { child, get, ref, push, onValue } from 'firebase/database'
 import {useSelector} from 'react-redux'
 
 
@@ -15,12 +15,22 @@ export default function Messages() {
 
   useEffect(()=>{
     if(idUser && idFriend){
-      const dbRef = ref(realTimeDB)
-      get(child(dbRef,`${idUser}/${idFriend}`))
-      .then(snapshot=>{
+      // Obtener datos una vez
+      // get(child(dbRef,`${idUser}/${idFriend}`))
+      // .then(snapshot=>{
+      //   if(snapshot.exists()){
+      //     setMessages(snapshot.val())
+      //     console.log(Object.entries(snapshot.val()))
+      //   }else{
+      //     console.log("No existen mensajes")
+      //   }
+      // })
+
+      const chatRef = ref(realTimeDB,`${idUser}/${idFriend}`)
+
+      onValue(chatRef,snapshot=>{
         if(snapshot.exists()){
           setMessages(snapshot.val())
-          console.log(Object.entries(snapshot.val()))
         }else{
           console.log("No existen mensajes")
         }
@@ -41,6 +51,7 @@ export default function Messages() {
       sender:idUser,
       date:new Date().toISOString()
     })
+    messageInput.current.value = ""
   }
   
   return (
