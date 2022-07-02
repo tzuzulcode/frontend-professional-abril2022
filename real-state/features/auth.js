@@ -2,9 +2,6 @@ import {PrismaClient} from "@prisma/client"
 
 const client = new PrismaClient()
 
-function getUserByEmail(email){
-    return "Tzuzul"
-}
 async function getUserByIdProvider(idProvider){
     const user = await client.user.findFirst({
         where:{
@@ -16,13 +13,19 @@ async function getUserByIdProvider(idProvider){
 
     return user
 }
-function login(){
-    
-}
+
+async function createUser(data,idProvider,provider){
+    data.providers = [provider]
+    data.idProviders = [idProvider]
+    const user = await client.user.create({
+        data
+    })
+    console.log(user)
+    return user
+} 
 
 
 export {
-    getUserByEmail,
     getUserByIdProvider,
-    login
+    createUser
 }

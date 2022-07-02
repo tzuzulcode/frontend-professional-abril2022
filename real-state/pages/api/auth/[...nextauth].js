@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook"
+import {getUserByIdProvider,createUser} from "../../../features/auth"
 
 export default NextAuth({
     providers:[
@@ -15,10 +16,21 @@ export default NextAuth({
     ],
     callbacks:{
         async jwt({token,account}){
-            console.log("TOKEN:",token)
-            console.log("ACCOUNT:",account)
+            // console.log("TOKEN:",token)
+            // console.log("ACCOUNT:",account)
             // Account solo esta disponible cuando iniciamos sesion
             // Registrar el usuario en la BD
+            if(account){
+                const user = await getUserByIdProvider(account.providerAccountId)
+
+                if(!user){
+                    await createUser({
+                        name:token.name,
+                        email:token.email,
+                        picture:token.picture
+                    },account.providerAccountId,account.provider)
+                }
+            }
             return token
         },
         async session({session,user,token}){

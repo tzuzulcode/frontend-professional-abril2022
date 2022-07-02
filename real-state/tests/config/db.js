@@ -1,0 +1,9 @@
+import {PrismaClient} from "@prisma/client"
+
+const client = new PrismaClient()
+
+export async function initializeDatabase(){
+    return Promise.all([
+        client.user.deleteMany()
+    ])
+}

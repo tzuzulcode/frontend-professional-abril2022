@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "dotenv -e .env.development.local -- jest",
-    "db_push": "dotenv -e .env.development.local -- npx prisma db push"
+    "test": "dotenv -e .env.test.local -- jest",
+    "db_push": "dotenv -e .env.development.local -- npx prisma db push",
+    "db_push_test": "dotenv -e .env.test.local -- npx prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^4.0.0",
