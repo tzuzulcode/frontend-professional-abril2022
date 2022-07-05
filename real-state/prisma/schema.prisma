@@ -24,3 +24,30 @@ enum Role{
   NORMAL
   ADMIN
 }
+
+model Home{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  images String[]
+  price Float
+  description String
+  type HomeType
+  location Location?
+}
+
+model Location{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  country String
+  state String
+  city String
+  street String
+  number Int
+  zipCode Int
+  homeID String @unique @db.ObjectId
+  home Home @relation(fields: [homeID], references: [id])
+}
+
+enum HomeType{
+  HOME
+  DEPARMENT
+}

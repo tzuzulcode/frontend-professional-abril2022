@@ -20,7 +20,6 @@ async function createUser(data,idProvider,provider){
     const user = await client.user.create({
         data
     })
-    console.log(user)
     return user
 } 
 
