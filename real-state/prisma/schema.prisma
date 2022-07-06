@@ -49,5 +49,5 @@ model Location{
 
 enum HomeType{
   HOME
-  DEPARMENT
+  DEPARTMENT
 }

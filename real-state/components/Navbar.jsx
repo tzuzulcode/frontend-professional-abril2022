@@ -14,6 +14,9 @@ export default function Navbar() {
             <li>
                <Link href="/login">Login</Link>
             </li>
+            <li>
+               <Link href="/admin/homes/add">Add home</Link>
+            </li>
             {session&&<>
               <li>
                 <button onClick={signOut}>Cerrar sesión</button>
