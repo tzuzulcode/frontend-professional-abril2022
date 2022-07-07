@@ -1,6 +1,7 @@
 import React from 'react'
 import {Formik,Form,Field} from 'formik'
 import axios from 'axios'
+import AdminPage from '../../../components/AdminPage'
 
 export default function Add() {
   const createHome = async (data)=>{
@@ -13,7 +14,7 @@ export default function Add() {
     console.log(home)
   }
   return (
-    <>
+    <AdminPage>
         <h1>Add home</h1>
         <Formik
           initialValues={{
@@ -55,6 +56,6 @@ export default function Add() {
             <button type='submit'>Save</button>
           </Form>
         </Formik>
-    </>
+    </AdminPage>
   )
 }
