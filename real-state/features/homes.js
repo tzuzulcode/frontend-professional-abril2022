@@ -22,3 +22,13 @@ export async function createHome(data){
     return home
 
 }
+
+export async function getAll(){
+    const homes = await client.home.findMany({
+        include:{
+            location:true
+        }
+    })
+
+    return homes
+}

@@ -18,7 +18,6 @@ export default function AdminPage({children}) {
                 <p>Loading...</p>:
                 <>
                     <p>AdminPage</p>
-                    {console.log(data)}
                     {children}
                 </>
             }
