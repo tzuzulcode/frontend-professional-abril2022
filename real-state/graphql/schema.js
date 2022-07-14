@@ -33,7 +33,19 @@ const typeDefs = gql`
 
 
     type Query{
-        homes: [Home]
+        homes(filter:Filter): [Home]
+        home(id:String!): Home
+    }
+
+    input Filter{
+        price: NumberFilter
+    }
+
+    input NumberFilter{
+        gt: Float
+        gte: Float
+        lt: Float
+        lte: Float
     }
 `
 

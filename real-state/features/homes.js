@@ -23,12 +23,26 @@ export async function createHome(data){
 
 }
 
-export async function getAll(){
+export async function getAll(filter){
     const homes = await client.home.findMany({
+        where:filter,
         include:{
             location:true
         }
     })
 
     return homes
+}
+
+export async function getOne(id){
+    const home = await client.home.findUnique({
+        where:{
+            id
+        },
+        include:{
+            location:true
+        }
+    })
+
+    return home
 }
