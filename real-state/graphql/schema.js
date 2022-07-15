@@ -37,6 +37,10 @@ const typeDefs = gql`
         home(id:String!): Home
     }
 
+    type Mutation{
+        deleteHome(id:String!): Home
+    }
+
     input Filter{
         price: NumberFilter
     }

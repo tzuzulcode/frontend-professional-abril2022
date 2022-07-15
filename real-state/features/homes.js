@@ -34,6 +34,8 @@ export async function getAll(filter){
     return homes
 }
 
+
+
 export async function getOne(id){
     const home = await client.home.findUnique({
         where:{
@@ -41,6 +43,16 @@ export async function getOne(id){
         },
         include:{
             location:true
+        }
+    })
+
+    return home
+}
+
+export async function deleteOne(id){
+    const home = await client.home.delete({
+        where:{
+            id
         }
     })
 
