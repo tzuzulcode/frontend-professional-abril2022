@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@editorjs/header": "^2.6.2",
     "@prisma/client": "^4.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "apollo-server": "^3.10.0",
@@ -26,6 +27,7 @@
     "prisma": "^4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-editor-js": "^2.1.0",
     "react-icons": "^4.4.0"
   },
   "devDependencies": {

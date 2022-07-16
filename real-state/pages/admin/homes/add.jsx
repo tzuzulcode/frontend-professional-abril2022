@@ -1,17 +1,33 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {Formik,Form,Field} from 'formik'
 import axios from 'axios'
 import AdminPage from '../../../components/AdminPage'
+import dynamic from 'next/dynamic'
+
+let Editor
+if(typeof window!=="undefined"){
+  Editor = dynamic(
+    ()=>import("../../../components/Editor"),
+    {ssr:false}
+  )
+}
 
 export default function Add() {
+
+  const editor = useRef()
+
   const createHome = async (data)=>{
-    const parsedData = {
-      ...data,
-      homeDetails:{...data.homeDetails}
-    }
-    parsedData.homeDetails.images = data.homeDetails.images.split(",")
-    const {data:home} = await axios.post("/api/homes/create",parsedData)
-    console.log(home)
+
+    const content = await editor.current.save()
+    console.log(content)
+
+    // const parsedData = {
+    //   ...data,
+    //   homeDetails:{...data.homeDetails}
+    // }
+    // parsedData.homeDetails.images = data.homeDetails.images.split(",")
+    // const {data:home} = await axios.post("/api/homes/create",parsedData)
+    // console.log(home)
   }
   return (
     <AdminPage>
@@ -22,7 +38,6 @@ export default function Add() {
               title:"",
               images:"",
               price:0,
-              description:"",
               type:"HOME",
             },
             locationDetails:{
@@ -40,7 +55,6 @@ export default function Add() {
             <Field type="text" name="homeDetails.title" placeholder="Title..." />
             <Field type="text" name="homeDetails.images" placeholder="Images..." />
             <Field type="number" name="homeDetails.price" placeholder="Price..." />
-            <Field type="text" name="homeDetails.description" placeholder="Description..." />
             {/* type */}
             <Field as="select" name="homeDetails.type">
               <option value="HOME">Home</option>
@@ -56,6 +70,9 @@ export default function Add() {
             <button type='submit'>Save</button>
           </Form>
         </Formik>
+        <div className='bg-red-500 w-screen h-screen'>
+          {Editor&&<Editor instance={editor}/>}
+        </div>
     </AdminPage>
   )
 }
